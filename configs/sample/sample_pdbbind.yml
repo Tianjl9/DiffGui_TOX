@@ -1,0 +1,43 @@
+model:
+  checkpoint: /Data/tianjl/DiffGui_4/logs/train_20251215_164342/checkpoints/success/348000.pt #ckpt/trained.pt
+  target: None #sample/3ztx_pocket.pdb
+  ligand: None
+  frag: None
+  gen_mode: denovo # [denovo, frag_cond, frag_diff]
+  #logp: 2.00
+  #tpsa: 100
+  sa: 1.00
+  qed: 0.80
+  aff: 12.00
+  toxicity: 0.50
+
+bond_predictor: /Data/tianjl/DiffGui_4/bond_logs/train_bond_20251215_164425/checkpoints/success/564000.pt #ckpt/bond_trained.pt
+
+sample:
+  seed: 42 #原2023
+  batch_size: 6 #原2
+  num_mols: 10
+  save_traj_prob: 0.02
+  sample: True
+  sample_method: priori
+  mode: test # pocket or test
+  test_id: 0 # 0 ~ 99
+  add_edge: None
+  gui_strength: 6.0 #原3.0
+  guidance:
+    - uncertainty
+    - 1.e-4
+
+data:
+  name: protein_ligand
+  path: data/PDBbind_v2020_pocket10
+  split: data/PDBbind_pocket10_filtered_split.pt
+  protein_root: data/PDBbind_v2020
+  #path: data/crossdocked_v1.1_rmsd1.0_pocket10
+  #split: data/crossdocked_pocket10_pose_split.pt
+  #protein_root: data/crossdocked_v1.1_rmsd1.0
+  dataset: pdbbind # [pdbbind, crossdocked]
+  transform:
+    ligand_atom_mode: aromatic # [basic, aromatic, full]
+    random_rot: False
+    sample: False
